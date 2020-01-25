@@ -1,3 +1,16 @@
+# yarn add
+
+```bash
+$ yarn add express mongoose express-graphql lodash graphql body-parser
+```
+
+```bash
+$ yarn add --dev nodemon
+```
+
+# package.json
+
+```json
 {
   "name": "api",
   "version": "1.0.0",
@@ -18,3 +31,4 @@
     "nodemon": "^2.0.2"
   }
 }
+```
