@@ -8,8 +8,9 @@ const RootQuery = new GraphQLObjectType({
   fields: () => ({
     posts: {
       type: new GraphQLList(PostType),
-      resolve() {
-        return Post.find({});
+      async resolve() {
+        // controller 에 따로 빼볼까?
+        return await Post.find({});
       },
     },
   }),
