@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const PostComment = new Schema(
+
+const PostCommentSchema = new Schema(
   {
     post: {
       type: Schema.Types.ObjectId,
@@ -21,4 +22,24 @@ const PostComment = new Schema(
   },
 );
 
-module.exports = mongoose.model('PostComment', PostComment);
+PostCommentSchema.statics.addLike = async function(id) {
+  try {
+    let comment = await this.findById(id);
+    ++comment.likes;
+    return comment.save();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+PostCommentSchema.statics.unLike = async function(id) {
+  try {
+    let comment = await this.findById(id);
+    --comment.likes;
+    return comment.save();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+module.exports = mongoose.model('PostComment', PostCommentSchema);
