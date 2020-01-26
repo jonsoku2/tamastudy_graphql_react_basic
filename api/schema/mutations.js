@@ -53,6 +53,7 @@ const mutation = new GraphQLObjectType({
         return await Post.addComment(postId, content);
       },
     },
+    // 이부분..
     addLikeToPost: {
       type: PostCommentType,
       args: { postCommentId: { type: GraphQLID } },
