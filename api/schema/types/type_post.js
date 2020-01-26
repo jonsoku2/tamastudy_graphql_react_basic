@@ -1,5 +1,7 @@
 const graphql = require('graphql');
-const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList } = graphql;
+const PostCommentType = require('./type_post_comment.js');
+const Post = require('../../models/Post');
 
 const PostType = new GraphQLObjectType({
   name: 'Post',
@@ -12,6 +14,12 @@ const PostType = new GraphQLObjectType({
     },
     description: {
       type: GraphQLString,
+    },
+    comments: {
+      type: new GraphQLList(PostCommentType),
+      resolve(parentValue) {
+        return Post.findPostComments(parentValue.id);
+      },
     },
   }),
 });
