@@ -1,8 +1,18 @@
 import React from 'react';
-import './App.css';
+// router
+import { Router, Route, Switch } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Posts, Post } from './components/page/Post';
 
-function App() {
-  return <div>client 정상 작동 중</div>;
-}
+const App = () => {
+  return (
+    <Router history={createBrowserHistory()}>
+      <Switch>
+        <Route path="/posts" component={Posts} />
+        <Route path="/post/:id" exact component={Post} />
+      </Switch>
+    </Router>
+  );
+};
 
 export default App;
