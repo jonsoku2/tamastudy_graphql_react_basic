@@ -3,6 +3,9 @@ const expressGraphQL = require('express-graphql');
 const bodyParser = require('body-parser');
 const connectMongoDatabase = require('./database/mongo');
 const schema = require('./schema/schema');
+const session = require('express-session');
+const passport = require('passport');
+const MongoStore = require('connect-mongo')(session);
 
 // starting express app
 const app = express();
@@ -15,6 +18,19 @@ connectMongoDatabase();
 
 // middleware
 app.use(bodyParser.json());
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: 'aaabbbccc',
+    store: new MongoStore({
+      url: process.env.API_MONGO_URI,
+      autoReconnect: true,
+    }),
+  }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(
   '/graphql',

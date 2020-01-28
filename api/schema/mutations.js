@@ -1,5 +1,7 @@
 const graphql = require('graphql');
 const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql;
+const UserType = require('./types/type_user');
+const AuthService = require('../services/auth');
 const Post = require('../models/Post');
 const PostType = require('./types/type_post');
 const PostComment = require('../models/PostComment');
@@ -8,6 +10,35 @@ const PostCommentType = require('./types/type_post_comment');
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
+    signup: {
+      type: UserType,
+      args: {
+        username: { type: GraphQLString },
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
+      },
+      resolve(parentValue, { username, email, password }, req) {
+        return AuthService.signup({ username, email, password, req });
+      },
+    },
+    logout: {
+      type: UserType,
+      resolve(parentValue, args, req) {
+        const { user } = req;
+        req.logout();
+        return user;
+      },
+    },
+    login: {
+      type: UserType,
+      args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
+      },
+      resolve(parentValue, { email, password }, req) {
+        return AuthService.login({ email, password, req });
+      },
+    },
     addPost: {
       type: PostType,
       args: {

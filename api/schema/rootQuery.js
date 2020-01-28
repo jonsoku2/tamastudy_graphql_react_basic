@@ -1,3 +1,4 @@
+const UserType = require('./types/type_user');
 const Post = require('../models/Post');
 const PostComment = require('../models/PostComment');
 const PostType = require('./types/type_post');
@@ -8,6 +9,12 @@ const { GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLID } = graphql;
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: () => ({
+    user: {
+      type: UserType,
+      resolve(parentValue, args, req) {
+        return req.user;
+      },
+    },
     posts: {
       type: new GraphQLList(PostType),
       resolve: async function() {
